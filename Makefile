@@ -1,26 +1,34 @@
-## Configure Go build options
-GIN_MODE = "release"
-CGO_ENABLED = 0
 
-## Configure DB connection params
-DB = "root:password@(localhost:3306)/library"
+DOCKER_COMPOSE := docker-compose --file docker-compose.yml
+DOCKER_COMPOSE_EXEC := docker-compose -f docker-compose.yml exec -T golang
 
 run:
-	 cd cmd/geekshubs-library && GIN_MODE=${GIN_MODE} DB=${DB} go run main.go
+	$(DOCKER_COMPOSE) up -d --remove-orphans
+
+recreate:
+	$(DOCKER_COMPOSE) up -d --build --force-recreate
 
 test:
-	go get github.com/mfridman/tparse
-	cd pkg && CGO_ENABLED=${CGO_ENABLED} go test ./... -json -cover | tparse -all
+	make run
+	$(DOCKER_COMPOSE_EXEC) bash -c "go get github.com/mfridman/tparse && cd pkg && go test ./... -json -cover | tparse -all"
 
 lint:
-	go get -u golang.org/x/lint/golint
-	golint -set_exit_status ./...
+	make run
+	$(DOCKER_COMPOSE_EXEC) bash -c "go install golang.org/x/lint/golint && golint -set_exit_status ./..."
 
 build:
+	make run
 	# MacOS
-	cd cmd/geekshubs-library && GOOS=darwin GOARCH=amd64 go build -o ../../bin/main-darwin-amd64 main.go
+	$(DOCKER_COMPOSE_EXEC) bash -c "cd cmd/geekshubs-library && GOOS=darwin GOARCH=amd64 go build -o ../../bin/main-darwin-amd64 main.go"
 	# Linux
-	cd cmd/geekshubs-library && GOOS=linux GOARCH=amd64 go build -o ../../bin/main-linux-amd64 main.go
+	$(DOCKER_COMPOSE_EXEC) bash -c "cd cmd/geekshubs-library && GOOS=linux GOARCH=amd64 go build -o ../../bin/main-linux-amd64 main.go"
 	# Windows
-	cd cmd/geekshubs-library && GOOS=windows GOARCH=amd64 go build -o ../../bin/main-windows-amd64 main.go
+	$(DOCKER_COMPOSE_EXEC) bash -c "cd cmd/geekshubs-library && GOOS=windows GOARCH=amd64 go build -o ../../bin/main-windows-amd64 main.go"
 
+check_app:
+	make run
+	$(DOCKER_COMPOSE_EXEC) bash -c "curl --fail http://localhost:8080/api/"	
+
+shell:
+	make run
+	$(DOCKER_COMPOSE_EXEC) bash 
