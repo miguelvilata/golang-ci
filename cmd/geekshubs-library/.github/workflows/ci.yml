@@ -1,0 +1,13 @@
+name: CI Workflow
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: test
+        run: echo "Ehllo from ${{ github.Workflow }} triggered by the ${{ github.event_name }} done by ${{ github.actor }}"
