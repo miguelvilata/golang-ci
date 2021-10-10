@@ -9,4 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       
-      - name: install dependencies  
+      - name: test
+        run: echo "Hello from ${{ github.Workflow }} triggered by the ${{ github.event_name }} done by ${{ github.actor }}"
