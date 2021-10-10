@@ -1,0 +1,35 @@
+version: '2'
+services:
+
+  golang:
+    container_name: golang-app
+    image: golang:latest
+    working_dir: /app    
+    #entrypoint: make run
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+    ports:
+      - "8080:80"
+
+  database:
+    container_name: database
+    image: mysql:5.7.34
+    restart: always
+    environment:
+      MYSQL_DATABASE: library
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./docker-volumes/mysql:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
+    depends_on:
+      - adminer
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
