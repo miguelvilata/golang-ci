@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v1
       
       - name: test
-        run: echo "Ehllo from ${{ github.Workflow }} triggered by the ${{ github.event_name }} done by ${{ github.actor }}"
+        run: echo "Hello from ${{ github.Workflow }} triggered by the ${{ github.event_name }} done by ${{ github.actor }}"
