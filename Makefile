@@ -3,7 +3,7 @@ GIN_MODE = "release"
 CGO_ENABLED = 0
 
 ## Configure DB connection params
-DB = "root:password@(localhost:3306)/library"
+DB = "root:1234@(database:3306)/library"
 
 run:
 	 cd cmd/geekshubs-library && GIN_MODE=${GIN_MODE} DB=${DB} go run main.go
