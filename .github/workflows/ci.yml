@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: info
-        run: echo "Hello from ${{ github.Workflow }} triggered by the ${{ github.event_name }} done by ${{ github.actor }}"
+        run: echo "Hello from github action ${{ github.Workflow }} triggered by the ${{ github.event_name }} done by ${{ github.actor }}"
 
       - name: lint
         run: make lint
