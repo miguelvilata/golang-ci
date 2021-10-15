@@ -1,9 +1,11 @@
-
 DOCKER_COMPOSE := docker-compose --file docker-compose.yml
 DOCKER_COMPOSE_EXEC := docker-compose -f docker-compose.yml exec -T golang
 
 run:
 	$(DOCKER_COMPOSE) up -d --remove-orphans
+
+stop:
+	$(DOCKER_COMPOSE) stop
 
 recreate:
 	$(DOCKER_COMPOSE) up -d --build --force-recreate
