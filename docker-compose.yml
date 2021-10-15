@@ -2,9 +2,12 @@ version: '2'
 services:
 
   golang:
-    image: golang:latest
-    working_dir: /app    
-    entrypoint: go run cmd/geekshubs-library/main.go
+    build:
+        context: .
+    #image: golang:latest
+    #working_dir: /app    
+    #entrypoint: go run cmd/geekshubs-library/main.go
+    #entrypoint: go run cmd/geekshubs-library/main.go
     environment:
       - DB
       - GIN_MODE
